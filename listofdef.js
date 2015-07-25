@@ -85,11 +85,7 @@ var Quizz = function ()
 	}
 	//------ 
 
-	// this.calculatenum = function()
-	// {
-	// 	return randomnumber = Math.floor(Math.random() * this.listOfQuestions.length +1);
-	// }
-
+	//------ compares if random
 	this.ifrandomnumber = function ()
 	{
 		return quizz.listOfQuestions[i]['id'] === this.randomnumber;
