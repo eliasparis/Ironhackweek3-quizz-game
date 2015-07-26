@@ -11,10 +11,7 @@ var Question = function  (text,answer,id)
 	this.points = 3;
 }
 
-var Randomnumber = function (length)
-{
 
-}
 
 //------ creating questions
 var question1 = new Question('¿Capital de España?','madrid',1);
@@ -28,13 +25,72 @@ var Quizz = function ()
 {
 	
 	this.listOfQuestions = [];	
+	this.listOfUsers = [];
 	var totalpoints = 0;
 	var i = 0;
 	//------ set a random number dependig on the number of cuestions
 	this.randomnumber = Math.floor(Math.random() * this.listOfQuestions.length +1);
 	//------
+
+	//------ Asking if the user is registered
+	this.userlog = function ()
+	{
+		console.log('New user?');
+		prompt.start();
+		prompt.get(['yesorno'], function (err, result)
+				{
+					if (result.yesorno.toLowerCase() === 'yes')
+					{ 
+						quizz.userLogAnswerYes();
+					
+					}else if (result.yesorno.toLowerCase() === 'no') 
+					{
+						quizz.userLogAnswerNo();
+
+					}else{
+						console.log('Not understand, repeat please');
+						quizz.userlog(); 
+					}
+				});
+	}
+
+	//----- If userlog answer === 'yes' ask for user name
+	this.userLogAnswerYes = function ()
+	{
+		console.log('Enter username');
+		prompt.start();
+		prompt.get(['username'], function (err, result)
+			{
+				quizz.adduser(result.username);
+				console.log(quizz.listOfUsers)
+			});
+	}		
+
+	//----- If userlog answer 'no' as for register
+	this.userLogAnswerNo = function ()
+	{
+		console.log('Enter your username (case sensitive)');
+		prompt.start();
+		prompt.get(['username'], function (err, result)
+			{
+				var currentuser = result.username;
+
+				if ( //--- add condition )
+				{
+					console.log(currentuser);
+					quizz.play();
+				}else{
+					console.log('Wrong username, try again');
+					quizz.userLogAnswerNo();
+				}
+			});
+	}
+
+	//------ checking if the username inserter exists in userslist
 	
 	
+
+	//------ this functions begins the game with the first question
 	this.play = function ()
 	{	
 		quizz.makequestion();
@@ -43,7 +99,6 @@ var Quizz = function ()
 
 	this.useprompt = function ()
 	{
-		//console.log(randomnumber);
 		prompt.start();
 				prompt.get(['answer'], function (err, result)
 				{
@@ -91,6 +146,7 @@ var Quizz = function ()
 		return quizz.listOfQuestions[i]['id'] === this.randomnumber;
 	}
 
+	//----- question maker
 	this.makequestion = function()
 	{
 
@@ -116,8 +172,21 @@ Quizz.prototype.addquestion = function (question)
 	this.randomnumber = Math.floor(Math.random() * this.listOfQuestions.length +1);
 }
 
+Quizz.prototype.adduser = function (username)
+{
+	this.listOfUsers.push(username);
+}
+
+//------ User class
+var User = function(name)
+{
+	this.name = name;
+	this.points = 0;
+	this.lastquestion = 1;
+}
 
 
+//------ creating the game
 var quizz = new Quizz();
 
 //------ adding cuestions to the game
@@ -126,9 +195,17 @@ quizz.addquestion(question2);
 quizz.addquestion(question3);
 quizz.addquestion(question4);
 
+//------ hardcoding some gamers
+var user1 = new User('elias');
+var user2 = new User('Pintos');
+var user3 = new User('aris');
+
+quizz.adduser(user1);
+quizz.adduser(user2);
+quizz.adduser(user3);
 
 //----- playing the game
-quizz.play();
+quizz.userlog();
 
 
 
