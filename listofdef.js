@@ -24,6 +24,7 @@ var question4 = new Question('¿Capital de Portugal?', 'lisboa',4);
 var Quizz = function ()
 {
 	
+	var userexists = false;
 	this.listOfQuestions = [];	
 	this.listOfUsers = [];
 	var totalpoints = 0;
@@ -74,15 +75,24 @@ var Quizz = function ()
 		prompt.get(['username'], function (err, result)
 			{
 				var currentuser = result.username;
+				for (z = 0; z < quizz.listOfUsers.length; z++ )
+    			{
+        			if (quizz.listOfUsers[z]['name'] === currentuser)
+        			{
+            			userexists = true;
+        			}else{
+						userexists = false; 
+					}
+    			};
 
-				if ( //--- add condition )
-				{
-					console.log(currentuser);
-					quizz.play();
-				}else{
-					console.log('Wrong username, try again');
-					quizz.userLogAnswerNo();
-				}
+    			if (userexists === true)
+    			{
+    				quizz.play();
+    			}else{
+    				console.log('Wrong username, tryagain.');
+    			};
+
+				
 			});
 	}
 
